@@ -133,9 +133,14 @@ func (n *NodeManager) Inspect(file string) error {
 		embedInterface := ds.NewSet[string]()
 		if x.Methods != nil || x.Methods.List != nil {
 			for _, v := range x.Methods.List {
-				_, ok := v.Type.(*ast.Ident)
+				ident, ok := v.Type.(*ast.Ident)
 				if ok {
-					embedInterface.Insert(v.Type.(*ast.Ident).Name)
+					embedInterface.Insert(ident.Name)
+					continue
+				}
+				se, ok := v.Type.(*ast.SelectorExpr)
+				if ok {
+					embedInterface.Insert(se.X.(*ast.Ident).Name + "." + se.Sel.Name)
 					continue
 				}
 
@@ -274,7 +279,7 @@ func (n *NodeManager) AnalysisInterface(interfaceName string, structName string)
 	}
 	missing := make([]string, 0)
 	wrong := make([]string, 0)
-	for _, method := range interfaceNode.methods {
+	for _, method := range interfaceNode.AllMethods() {
 		found := false
 		correct := false
 		for _, function := range structNode.functions {
