@@ -3,13 +3,12 @@
 查看go语言结构体没有实现接口的原因
 
 #### 安装方式
+请先安装fyne工具
 ```bash
-go build . && chmod +x sharingan && cp sharingan /usr/local/bin
+fyne package -os darwin -icon static/Icon.png
 ```
 
 #### 使用方法
-在项目的根目录下执行sharingan命令，根据提示输入接口信息和结构体信息，系统就会分析出缺失或者错误的方法
-
-![img.png](static/img.png)
-![img_2.png](static/img_2.png)
-![img_3.png](static/img_3.png)
+1. 打开sharingan软件，然后设置home source目录,
+2. 选择待分析的项目
+3. 根据需要选择接口与结构体，判断结构体是否实现接口以及缺失的方法
